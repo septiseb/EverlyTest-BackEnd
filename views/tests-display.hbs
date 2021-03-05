@@ -1,0 +1,113 @@
+<nav style="background-color: #4f46E6;" class="bg-gray-800">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="relative flex items-center justify-between h-16">
+      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+        <!-- Mobile menu button-->
+        <button
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+          aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+        </button>
+      </div>
+      <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="hidden sm:block sm:ml-6">
+          <div class="flex space-x-4">
+            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+            <a href="/"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+            <a href="/tests"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pruebas</a>
+            <a href="/signup"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Registrar</a>
+            <a href="/login"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar
+              Sesión</a>
+            <a href="/login-tester"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Aplicante</a>
+          </div>
+        </div>
+      </div>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+      </div>
+    </div>
+  </div>
+
+  <!--
+    Mobile menu, toggle classes based on menu state.
+
+    Menu open: "block", Menu closed: "hidden"
+  -->
+  <div class="hidden sm:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+      <a href="/"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+      <a href="/tests"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pruebas</a>
+      <a href="/signup"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Registrar</a>
+      <a href="/login"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar
+        Sesión</a>
+      <a href="/login-tester"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Aplicante</a>
+    </div>
+  </div>
+</nav>
+
+<section class="py-2 text-center container" style="padding-bottom: 50px;">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <h1 class="fw-light" style="font-size: 50px;">EverlyTest</h1>
+      <p class="lead text-muted">Evaluación previa para filtrar candidatos</p>
+    </div>
+  </div>
+  <form style="display: flex;flex-direction: column;justify-content: center" method="POST" action="/tests">
+    <div style="display: flex;justify-content: center" class="mb-3">
+      <input style="text-align: center;width:50%" type="text" class="form-control" id="exampleInputEmail1"
+        name="position" placeholder="Buscar la posicion que quieres cubrir, herramientas o pruebas para tus candidatos">
+      <button style="width: 20%; margin-left:10px ;" type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+  </form>
+</section>
+
+<section class="py-1">
+  <div class="flex container mx-auto">
+    <div style="justify-content: space-evenly;" class="flex flex-wrap px-6">
+      {{#each this.tests}}
+      <div style="width: 400px;display: flex; justify-content: space-around; align-content: space-between;"
+        class="w-full lg:w-1/2  md:px-4 lg:px-6 py-3">
+        <div  class="bg-white hover:shadow-xl border-red-900">
+          <div class="">
+            <img src="../{{this.url}}" alt="" class="h-56 w-full border-white border-8 hover:opacity-25">
+          </div>
+          <div class="px-4 py-4 md:px-10">
+            <h1 class="font-bold text-lg">
+              {{name}}
+            </h1>
+            <p class="py-4">
+              {{description}}
+            </p>
+            <div style="justify-content: space-evenly;" class="flex pt-8">
+              <div class="w-full md:w-1/3 text-sm font-medium">
+                {{duration}} minutos
+              </div>
+              <div class="2/3">
+                <div class="text-sm font-medium">
+                  <a style="background-color: #0d6efd;" href="/tests/{{_id}}" class="flex text-white 
+                            bg-blue-400 hover:bg-blue-500 duration-300 
+                            text-xs font-bold 
+                            mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 
+                            opacity-90 hover:opacity-100">
+                    Detalle
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</section>

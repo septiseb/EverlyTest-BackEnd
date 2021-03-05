@@ -1,0 +1,220 @@
+{{!-- Bienvenido {{this.userLog.name}}
+<button><a href="/user-profile/create-test" style="color: black;">Crear Pruebas</a></button>
+<form action="/logout" method="POST">
+  <button type="submit">Cerrar Sesion</button>
+</form> --}}
+<nav style="background-color: #4f46E6;" class="bg-gray-800">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="relative flex items-center justify-between h-16">
+      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+        <!-- Mobile menu button-->
+        <button
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+          aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+        </button>
+      </div>
+      <div class="flex-1 flex items-center justify-between sm:items-stretch sm:justify-between">
+        <div class="flex justify-between">
+          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+          <div>
+            <p class="text-white block py-2 text-base text-lg">
+              Bienvenido {{this.userLog.name}}
+          </div>
+        </div>
+        <div class="flex justify-between">
+          <div class="flex items-center text-white ml-500">
+            <form action="/logout" method="POST">
+              <button type="submit">Cerrar Sesion</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+    </div>
+  </div>
+  </div>
+
+  <!--
+    Mobile menu, toggle classes based on menu state.
+
+    Menu open: "block", Menu closed: "hidden"
+  -->
+  <div class="hidden sm:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+      <a href="/"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="m-3">
+  <button
+    class="text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-800 hover:bg-green-300 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+    <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+      <path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z" />
+    </svg>
+    <a class="ml-2" href="/user-profile/create-test" style="color: black;">Crear Pruebas</a>
+  </button>
+</div>
+
+{{#if this.findGroupTest}}
+{{#each this.findGroupTest}}
+
+<div class="bg-white rounded-lg shadow-sm hover:shadow-lg duration-500 px-2 sm:px-6 md:px-2 py-4 my-6">
+  <div class="grid grid-cols-12 gap-3">
+    <!-- Meta Column -->
+    <div style="display: flex;flex-direction: column;justify-content: center;"
+      class="col-span-0 sm:col-span-2 text-center hidden sm:block">
+      <!-- Vote Counts -->
+      <div class="grid grid-rows-2">
+        <div class="inline-block font-medium text-xl">
+          {{testerEmail.length}}
+        </div>
+
+        <div class="inline-block font-medium text-sm">
+          {{#if (isOne testerEmail.length)}}
+          Aplicante
+          {{else}}
+          Aplicantes
+          {{/if}}
+        </div>
+      </div>
+
+      <!-- Answer Counts -->
+      <a href="#" class="grid grid-rows-2 mx-auto mb-3 py-1 w-4/5 2lg:w-3/5 rounded-md bg-green-400">
+        <div class="inline-block font-medium text-2xl text-white">
+          <!-- Introducir Cuantos cllevan contestados -->
+          {{answer this.testerEmail}}
+        </div>
+
+        <div class="inline-block font-medium text-white mx-1 text-sm lg:text-md">
+          Contestados
+        </div>
+      </a>
+
+      <!-- View Counts -->
+      <div class="grid my-3">
+        <span class="inline-block font-bold text-xs">
+          Promedio: {{average this.testerEmail}}
+        </span>
+      </div>
+    </div>
+
+    <!-- Summary Column -->
+    <div class="col-span-12 sm:col-start-3 sm:col-end-13 px-3 sm:px-0">
+      <div class="grid block sm:hidden">
+        <div class="flex flex-wrap">
+          <div class="mr-2">
+            <div class="inline-block font-light capitalize">
+              <i class="uil uil-arrow-circle-up mr-1"></i>
+              <span class="text-sm">
+                {{#if (isOne testerEmail.length)}}
+                {{testerEmail.length}} Aplicante
+                {{else}}
+                {{testerEmail.length}} Aplicantes
+                {{/if}}
+              </span>
+            </div>
+          </div>
+          <div class="mr-2">
+            <div class="inline-block font-light capitalize">
+              <i class="uil uil-check-circle mr-1"></i>
+              <span class="text-sm">
+                0 Contestados
+              </span>
+            </div>
+          </div>
+          <div class="mr-2">
+            <div class="inline-block">
+              <i class="uil uil-eye mr-1"></i>
+              <span class="text-sm capitalize font-light">
+                Promedio: 35.0
+              </span>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+
+
+      <div class="mt-2">
+        <p href="#" class="sm:text-sm md:text-md lg:text-lg text-gray-700 font-bold">
+          {{name}}
+        </p>
+
+        <p class="mt-2 text-gray-600 text-sm md:text-md">
+          {{positionDescription}}
+        </p>
+        <div>
+          <p class="mt-2 text-gray-600 text-sm md:text-md inline-block">
+            <strong>Posición:</strong> {{namePosition}}
+          </p>
+          <p style="margin-left: 50px;" class="mt-2 text-gray-600 text-sm md:text-md inline-block">
+            <strong>Departamento:</strong> {{department}}
+          </p>
+        </div>
+      </div>
+      <div style="padding-top:2px; padding-bottom:0"
+        class="display row py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+        <p class="mt-2 text-gray-600 text-sm md:text-md inline-block">
+          <strong>Pruebas a Aplicar:</strong>
+        </p>
+        <ul style="align-items: baseline;" class="flex flex-row display row list-disc space-y-2">
+          {{#each test}}
+          <li class="flex flex-row w-auto">
+            <div class="flex">
+              <span class="h-6 flex items-center sm:h-7">
+                <svg class="flex-shrink-0 h-4 w-4 text-cyan-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+              <p class="ml-2">
+                <code class="margin-text-sm font-bold text-gray-900">{{this.name}}</code>
+              </p>
+            </div>
+          </li>
+          {{/each }}
+        </ul>
+      </div>
+      <!-- Question Labels -->
+      <div class="grid grid-cols-2 mt-4 my-auto">
+        <!-- Categories  -->
+        <div class="col-span-12 lg:col-span-8">
+
+          <a style="background-color: #0d6efd;" href="/user-profile/details/{{_id}}" class="inline-block  text-white 
+                            bg-blue-400 hover:bg-blue-500 duration-300 
+                            text-xs font-bold 
+                            mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 
+                            opacity-90 hover:opacity-100">
+            Detalle
+          </a>
+          <a href="/user-profile/create-test/{{_id}}" class="inline-block  text-white 
+                            bg-green-400 hover:bg-green-500 duration-300 
+                            text-xs font-bold 
+                            mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 
+                            opacity-90 hover:opacity-100">
+            Editar
+          </a>
+          <form class="inline-block" action="/delete-group-test/{{_id}}" method="POST">
+            <button class="inline-block  text-white 
+                            bg-red-400 hover:bg-red-500 duration-300 
+                            text-xs font-bold 
+                            mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 
+                            opacity-90 hover:opacity-100" type="submit"
+              style="background-color: red;">Eliminar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}}
+{{/if}}

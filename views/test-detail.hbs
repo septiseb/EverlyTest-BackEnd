@@ -1,0 +1,114 @@
+<nav style="background-color: #4f46E6;" class="bg-gray-800">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="relative flex items-center justify-between h-16">
+      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+        <!-- Mobile menu button-->
+        <button
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+          aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+        </button>
+      </div>
+      <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="hidden sm:block sm:ml-6">
+          <div class="flex space-x-4">
+            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+            <a href="/"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+            <a href="/tests"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pruebas</a>
+            <a href="/signup"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Registrar</a>
+            <a href="/login"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar
+              Sesión</a>
+            <a href="/login-tester"
+              class="text-white-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Aplicante</a>
+          </div>
+        </div>
+      </div>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+      </div>
+    </div>
+  </div>
+
+  <!--
+    Mobile menu, toggle classes based on menu state.
+
+    Menu open: "block", Menu closed: "hidden"
+  -->
+  <div class="hidden sm:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+      <a href="/"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+      <a href="/tests"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pruebas</a>
+      <a href="/signup"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Registrar</a>
+      <a href="/login"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Iniciar
+        Sesión</a>
+      <a href="/login-tester"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Aplicante</a>
+    </div>
+  </div>
+</nav>
+
+<div>
+  <p>Nombre: {{this.oneExam.name}}</p>
+  <p>Descripción: {{this.oneExam.description}}</p>
+  Aplica para las siguientes posiciones:
+  <p><br>
+    {{#each this.position}}
+    {{this}} |
+    {{/each}}
+  </p>
+  <p>Dificultad: {{this.oneExam.difficulty}}</p>
+  <p>Competencia: {{this.oneExam.skills}}</p>
+  <p></p>
+</div>
+
+<div class="mt-5 md:mt-0 md:col-span-2">
+  <form action="/tests/{{this.oneExam._id}}" method="POST">
+
+    <div class="shadow overflow-hidden sm:rounded-md">
+      <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+        <fieldset>
+          <div>
+            {{#if this.finalGrade}}
+            <div style="background-color: green;width: 20%;height:fit-content;padding:0;margin:0;"
+              class="bg-orange-lightest border-l-4 border-orange text-orange-dark p-4" role="alert">
+              <p style="margin: 0; padding:0;">Tu calificación es:</p>
+              <p style="margin: 0; padding: 0;" class="font-bold">{{this.finalGrade}}</p>
+            </div>
+            {{/if}}
+            <legend class="text-base font-medium text-gray-900">Ejemplo de Preguntas: </legend>
+          </div>
+          {{#each this.oneExam.questions}}
+          <p class="text-sm text-gray-500">{{question}}</p>
+
+          <div class="mt-4 space-y-4">
+            {{#each options}}
+            <div class="flex items-center">
+              <input id="push_everything" name="{{../id}}" value="{{this}}" type="radio"
+                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+              <label for="{{this}}" class="ml-3 block text-sm font-medium text-gray-700">
+                {{this}}
+              </label>
+            </div>
+            {{/each}}
+            {{/each}}
+          </div>
+        </fieldset>
+      </div>
+      <div style="justify-content: left;display: flex;" class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+        <button type="submit"
+          class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          style="justify-content: left;">
+          Enviar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

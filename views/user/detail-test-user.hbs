@@ -1,0 +1,77 @@
+<nav style="background-color: #4f46E6;" class="bg-gray-800">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="relative flex items-center justify-between h-16">
+      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+        <!-- Mobile menu button-->
+        <button
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+          aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+        </button>
+      </div>
+      <div class="flex-1 flex items-center justify-between sm:items-stretch sm:justify-between">
+        <div class="flex justify-between">
+          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+          <div>
+            <p class="text-white block py-2 text-base text-lg">
+             <a href="/user-profile">Regresar</a> 
+          </div>
+        </div>
+        <div class="flex justify-between">
+          <div class="flex items-center text-white ml-500">
+            <form action="/logout" method="POST">
+              <button type="submit">Cerrar Sesion</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+    </div>
+  </div>
+  </div>
+
+  <!--
+    Mobile menu, toggle classes based on menu state.
+
+    Menu open: "block", Menu closed: "hidden"
+  -->
+  <div class="hidden sm:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+      <a href="/"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+    </div>
+  </div>
+</nav>
+
+
+<div id="container" class="mx-auto">
+  <div class="block">
+    <!-- Card 1 -->
+    {{#each this.tester}}
+    <div class="w-50 h-13 m-0 p-0 lg:flex shadow rounded-lg border  border-gray-400">
+      <div class="bg-{{colorScore grade}}-400 rounded-lg lg:w-2/12 py-4 block h-full shadow-inner">
+        <div class="text-center tracking-wide">
+          {{#if grade}}
+          <div class="text-white font-bold text-2xl ">{{grade}}</div>
+          <div class="text-white font-normal text-1xl">Puntaje</div>
+          {{else}}
+          <div class="text-white font-bold text-2xl ">NA</div>
+          <div class="text-white font-normal text-1xl">Puntaje</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="w-full  lg:w-11/12 xl:w-full px-1 bg-white py-5 lg:px-2 lg:py-2 tracking-wide">
+        <div class="font-semibold text-gray-800 text-xl text-center lg:text-left px-2">
+          {{email}}
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+  </div>
+  <div>
+    <canvas id="my-chart"></canvas>
+  </div>
+</div>

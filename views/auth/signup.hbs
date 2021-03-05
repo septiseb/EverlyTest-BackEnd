@@ -1,0 +1,58 @@
+{{!-- views/auth/signup.hbs --}}
+<div class="container-login">
+  <div class="row m-0 h-100">
+    <div class="col p-0 text-center d-flex justify-content-center align-items-center display-none">
+      <img src="../../images/signup-background.png" class="w-100 image-login">
+    </div>
+    <div class="col p-0 bg-custom d-flex justify-content-center align-items-center flex-column w-100">
+      <h1 style="color: white;margin-top: 50px;">Registrarse</h1>
+      <form class="w-75" action="/signup" method="POST">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" name="name" placeholder="Nombre">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" name="lastName" placeholder="Apellido">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Correo</label>
+          <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}" class="form-control"
+            id="exampleFormControlInput1" name="email" placeholder="Correo">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Empresa</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" name="company"
+            placeholder="Nombre de la Empresa">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Sector</label>
+          <select name="sector" class="form-control">
+            {{#each this.sector}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Puesto</label>
+          <select name="position" class="form-control">
+            {{#each this.position}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput2" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="exampleFormControlInput2" name="password"
+            placeholder="*********">
+        </div>
+        {{#if errorMessage}}
+        <p>{{errorMessage}}</p>
+        {{/if}}
+
+        <button type="submit" class="btn btn-custom btn-lg btn-block mt-3 btn-crear-cuenta">Crear Cuenta</button>
+      </form>
+
+    </div>
+  </div>
+</div>
