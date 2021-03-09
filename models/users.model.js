@@ -57,6 +57,13 @@ const userSchema = new Schema(
       type: String,
       required: [true, "La contraseña es requerida"],
     },
+    imgProfile: {
+      type: String,
+      default:"./img"
+    },
+    phoneNumber:{
+      type: String,
+    },
     activo: {
       type: Boolean,
       default: false,

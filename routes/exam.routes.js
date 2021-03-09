@@ -4,6 +4,8 @@ const Exam = require("../models/exam.model");
 const Question = require("../models/question.model");
 const GroupTest = require("../models/grouptest.model");
 const Tester = require("../models/tester.model");
+const User = require("../models/users.model");
+3;
 const nodemailer = require("nodemailer");
 const multer = require("../configs/cloudinary.config");
 
@@ -17,17 +19,48 @@ router.get("/tests", async (req, res, next) => {
   }
 });
 
-
-
 //Test for the Users to add their tests
 /* rotuer.put("/user-profile/profile",multer.single("profileImg"),(req,res,next)=>{
   //const image = req.file // buscar propiedad para el URL
 
 }); */
 
+router.put("/user-profile/profile", async (req, res, next) => {
+  const {
+    name,
+    email,
+    lastName,
+    company,
+    sector,
+    position,
+    img,
+    id,
+  } = req.body;
+
+  try {
+    const userUpdate = await User.findByIdAndUpdate(id, {
+      name,
+      email,
+      lastName,
+      company,
+      sector,
+      position,
+      img,
+    });
+    res.status(201).json({ message: "Cambio Exitoso" });
+  } catch (e) {
+    res.status(500).json({ errorMessage: e });
+  }
+});
+
 router.post("/user-profile/create-test", async (req, res, next) => {
-  const { name, namePosition, department, positionDescription } = req.body;
-  const { _id } = req.session.currentUser;
+  const {
+    name,
+    namePosition,
+    department,
+    positionDescription,
+    user,
+  } = req.body;
 
   try {
     const createGroupTest = await GroupTest.create({
@@ -35,9 +68,9 @@ router.post("/user-profile/create-test", async (req, res, next) => {
       namePosition,
       department,
       positionDescription,
-      user: _id,
+      user,
     });
-    res.redirect(`/user-profile/create-test/${createGroupTest._id}`);
+    res.status(200).json(createGroupTest._id);
   } catch (e) {
     next(e);
   }
@@ -87,37 +120,47 @@ router.post("/tests/:id", async (req, res, next) => {
   }
 });
 
-router.get("/user-profile/create-test/:id", async (req, res, next) => {
+router.get("/user-profile/:id", async (req, res, next) => {
   const { id } = req.params;
-
   try {
-    const allTest = await Exam.find();
-    const groupTest = await GroupTest.findById(id);
-    const missingTest = allTest.filter(
-      (test) => !groupTest.test.includes(test._id)
-    );
-    const aggTest = allTest.filter((test) => groupTest.test.includes(test._id));
-    res.status(200).json({ missingTest, groupTest, aggTest });
+    const findGroupTest = await GroupTest.find({ user: id })
+      .populate("test")
+      .populate("testerEmail");
+    res.json(findGroupTest);
   } catch (e) {
-    res.status(500).json({ errorMessage: e });
+    res.json({ errorMessage: "Estas equivocado" });
   }
 });
 
-router.put("/user-profile/create-test/:id", async (req, res, next) => {
+router.get("/user-profile/edit-test/:id", async (req, res, next) => {
   const { id } = req.params;
-  const { idTestAdd, idTestErase, testerEmail } = req.body;
-  const checkTester = await Tester.find({ code: id });
-  const emailTesterDB = checkTester.map((t) => t.email);
+  try {
+    const findGroupTest = await GroupTest.findById(id).populate("test");
+    res.json(findGroupTest);
+  } catch (e) {
+    res.json({ errorMessage: "Estas equivocado" });
+  }
+});
 
-  idTestAdd
-    ? await GroupTest.findByIdAndUpdate(id, {
-        $addToSet: { test: idTestAdd },
-      })
-    : await GroupTest.findByIdAndUpdate(id, {
-        $pullAll: { test: [idTestErase] },
-      });
+router.post("/user-profile/create-test/:id", async (req, res, next) => {
+  const { id } = req.params;
+  //const checkTester = await Tester.find({ code: id });
+  //const emailTesterDB = checkTester.map((t) => t.email);
 
-  if (!testerEmail) {
+  try {
+    await GroupTest.findByIdAndUpdate(
+      id,
+      {
+        $addToSet: { test: req.body },
+      },
+      { new: true }
+    );
+    res.json({ message: "Exito" });
+  } catch (e) {
+    res.json({ errorMessage: e });
+  }
+
+  /*   if (!testerEmail) {
     return res.redirect(`/user-profile/create-test/${id}`);
   } else if (!emailTesterDB.some((email) => email == testerEmail)) {
     const TesterCreate = await Tester.create({
@@ -149,9 +192,28 @@ router.put("/user-profile/create-test/:id", async (req, res, next) => {
       })
       .then((info) => console.log(info))
       .catch((error) => console.log(error));
-  }
+  } */
+});
 
-  res.redirect(`/user-profile/create-test/${id}`);
+router.put("/user-profile/edit-test/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { idTestAdd } = req.body;
+  //const checkTester = await Tester.find({ code: id });
+  //const emailTesterDB = checkTester.map((t) => t.email);
+
+  console.log(req.body);
+
+  try {
+    await GroupTest.findByIdAndUpdate(
+      id,
+      {
+        test: req.body.test,   
+      },
+      { new: true }
+    );
+  } catch (e) {
+    res.json({ errorMessage: e });
+  }
 });
 
 router.delete("/delete-group-test/:idGroupTest", async (req, res, next) => {

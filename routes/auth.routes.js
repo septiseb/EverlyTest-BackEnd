@@ -4,7 +4,9 @@ const router = express.Router();
 const User = require("../models/users.model");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken")
 
+// IMPORTACION DE MODELOS
 const Exam = require("../models/exam.model");
 const Question = require("../models/question.model");
 const GroupTest = require("../models/grouptest.model");
@@ -12,33 +14,12 @@ const Tester = require("../models/tester.model");
 
 //Variables
 const roundSalt = 10;
-const positionArray = [
-  "Analista de Reclutamiento",
-  "Gerente de RH",
-  "Reclutador Jr",
-  "Recultador Sr",
-  "Otros",
-];
-const sectorArray = [
-  "Educación",
-  "Agricultura y Ganadería",
-  "Legal",
-  "Alimentos",
-  "Comercio",
-  "Construcción",
-  "Energía y Agua",
-  "Seguros",
-  "Hosteleria y Turismo",
-  "Tecnología",
-  "Telecomunicaciones",
-  "Transporte",
-  "Automotriz",
-  "Otros",
-];
+
 
 //Rutas
 router.get("/signup", (req, res, next) => {
-  res.json({ position: positionArray, sector: sectorArray });
+  console.log(req.headers.cookie);
+  res.send("hola");
 });
 
 router.post("/signup", async (req, res, next) => {
@@ -57,7 +38,7 @@ router.post("/signup", async (req, res, next) => {
   if (!name || !email || !password || !lastName || !company) {
     res.status(400).json({
       errorMessage:
-        "Todos los campos son mandatorios.Por favor, introducir usario, email y contraseña.",
+        "Todos los campos son mandatorios.",
     });
 
     return;
@@ -87,7 +68,6 @@ router.post("/signup", async (req, res, next) => {
     req.session.currentUser = user;
 
     res.status(200).json(req.session.currentUser);
-
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
       res.status(500).json({ errorMessage: error.message });
@@ -113,23 +93,14 @@ router.post("/login", async (req, res, next) => {
       errorMessage:
         "El Correo no fue encontrado. Por favor, ir al apartado de registro.",
     });
-
   } else if (bcrypt.compareSync(password, foundUser.password)) {
+    
     req.session.currentUser = foundUser;
 
     res.status(200).json(req.session.currentUser._id);
   } else {
     res.status(500).json({ errorMessage: "Contraseña Incorrecta" });
   }
-});
-
-router.get("/user-profile", async (req, res, next) => {
-  const userLog = req.session.currentUser;
-  const findGroupTest = await GroupTest.find({ user: userLog._id })
-    .populate("test")
-    .populate("testerEmail");
-
-  res.render("user/dashboard", { userLog, findGroupTest });
 });
 
 module.exports = router;

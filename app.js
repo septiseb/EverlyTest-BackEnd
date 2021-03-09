@@ -76,11 +76,11 @@ app.locals.title = "Express - Generated with IronGenerator";
 
 const index = require("./routes/index.routes");
 const auth = require("./routes/auth.routes");
-const test = require("./routes/exam.routes");
+const user = require("./routes/exam.routes");
 const tester = require("./routes/tester.routes");
 app.use("/", index);
 app.use("/api", auth);
-app.use("/", test);
+app.use("/user", user);
 app.use("/", tester);
 
 module.exports = app;
