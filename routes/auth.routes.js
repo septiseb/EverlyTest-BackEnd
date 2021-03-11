@@ -9,25 +9,14 @@ const { check } = require("express-validator");
 const authController = require("../controllers/authController");
 
 // IMPORTACION DE MODELOS
-const Exam = require("../models/exam.model");
-const Question = require("../models/question.model");
-const GroupTest = require("../models/grouptest.model");
-const Tester = require("../models/tester.model");
 const { logInLink, logInLinkCB } = require("../controllers/linkedinController");
 
 //Variables
 const roundSalt = 10;
 
 //RUTAS DE LINKEDIN
-router.get("/auth/linkedin", logInLink);
 
-router.get("/auth/linkedin/callback", logInLinkCB);
 //Rutas
-router.get("/signup", (req, res, next) => {
-  console.log(req.headers.cookie);
-  res.send("hola");
-});
-
 router.post("/signup", async (req, res, next) => {
   const {
     name,
@@ -78,8 +67,7 @@ router.post("/signup", async (req, res, next) => {
       res.status(500).json({ errorMessage: e });
     } else if (e.code === 11000) {
       res.status(500).json({
-        errorMessage:
-          "El correo debe ser unico. El correo ya esta registrado.",
+        errorMessage: "El correo debe ser unico. El correo ya esta registrado.",
       });
     }
     next(e);
