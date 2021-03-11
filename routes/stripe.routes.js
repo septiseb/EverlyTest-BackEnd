@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const stripe = require("stripe")(
-  "sk_test_51IQy5VCdjzp44qeDc0n4PIHaZ70Gyjj5cAAXNcE9dh8IHfvYWilra6k4NF6BxXhMk6Zk2i862x2AnEHbl9FHR6QQ00nwHXeMtb"
-);
+const stripe = require("stripe")(process.env.STRIPEKEY);
 const User = require("../models/users.model");
 
 router.get("/checkout-session", async (req, res) => {
@@ -12,19 +10,20 @@ router.get("/checkout-session", async (req, res) => {
 });
 
 router.put("/checkout-session/:idUser", async (req, res) => {
- const {idUser} = req.params;
- const {cusStripe} = req.body;
+  const { idUser } = req.params;
+  const { cusStripe } = req.body;
 
- try{
-  const userUpdate  = await User.findByIdAndUpdate(idUser,{stripeId:cusStripe,activo:true,freeTrial:false},{new:true});
-  res.status(201).json(userUpdate);
- } catch(e){
-   res.status(500).json({errorMessage:e})
- }
- 
+  try {
+    const userUpdate = await User.findByIdAndUpdate(
+      idUser,
+      { stripeId: cusStripe, activo: true, freeTrial: false },
+      { new: true }
+    );
+    res.status(201).json(userUpdate);
+  } catch (e) {
+    res.status(500).json({ errorMessage: e });
+  }
 });
-
-
 
 router.post("/create-checkout-session/:id", async (req, res) => {
   const { priceId } = req.body;
@@ -48,8 +47,8 @@ router.post("/create-checkout-session/:id", async (req, res) => {
       // the actual Session ID is returned in the query parameter when your customer
       // is redirected to the success page.
       success_url:
-        "http://localhost:3000/success.html?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:3000/canceled.html",
+        process.env.FRONTEND + "/success.html?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: FRONTEND + "/canceled.html",
     });
 
     res.send({

@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000"], // <== this will be the URL of our React app (it will be running on port 3000)
+    origin: [process.env.FRONTEND], // <== this will be the URL of our React app (it will be running on port 3000)
   })
 );
 
@@ -46,8 +46,7 @@ app.use(
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
-
+app.use(favicon(path.join(__dirname, "public", "images")));
 
 // default value for title local
 app.locals.title = "Express - Generated with IronGenerator";
@@ -56,7 +55,7 @@ const index = require("./routes/index.routes");
 const auth = require("./routes/auth.routes");
 const user = require("./routes/exam.routes");
 const tester = require("./routes/tester.routes");
-const stripe = require("./routes/stripe.routes")
+const stripe = require("./routes/stripe.routes");
 app.use("/", index);
 app.use("/api", auth);
 app.use("/user", user);
