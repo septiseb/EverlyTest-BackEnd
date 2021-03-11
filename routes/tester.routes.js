@@ -8,11 +8,16 @@ const Tester = require("../models/tester.model");
 router.post("/login-tester", async (req, res, next) => {
   const { email, code } = req.body;
 
+  if (!email || !code) {
+    res.status(400).json({ errorMessage: "Todos los campos son obligatorios" });
+  }
+
   try {
-    const testerFind = await Tester.findOne({ email: email.toLowerCase() });
-    if (testerFind.email) {
+    const testerFind = await Tester.find({ email: email.toLowerCase() });
+    const testFindEmail = testerFind ? testerFind : null;
+    if (testFindEmail) {
       //IT COULD BE A PROBLEM LATER
-      if (testerFind.filter((test) => test.code == code).length > 0) {
+      if (testFindEmail.filter((test) => test.code == code).length > 0) {
         const userForTest = testerFind.filter((test) => test.code == code)[0];
         res.status(200).json(userForTest.id);
       } else {
@@ -26,7 +31,7 @@ router.post("/login-tester", async (req, res, next) => {
       });
     }
   } catch (e) {
-    res.status(500).json({ errorMessage: e });
+    res.status(500).json({ errorMesagge: "Hola" });
   }
 });
 
@@ -88,7 +93,7 @@ router.post("/tester/:idTester/:idTest", async (req, res, next) => {
       { new: true }
     );
 
-    res.status(200).json({message: "El examen fue contestado"});
+    res.status(200).json({ message: "El examen fue contestado" });
   } catch (e) {
     res.status(500).json({ errorMessage: e });
   }

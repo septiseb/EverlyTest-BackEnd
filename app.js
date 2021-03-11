@@ -47,29 +47,6 @@ app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 
-hbs.registerPartials(__dirname + "/views/partials");
-hbs.registerHelper("isOne", function (value) {
-  return value === 1;
-});
-hbs.registerHelper("answer", function (value) {
-  return value.filter((v) => v.answerTest).length;
-});
-hbs.registerHelper("average", function (value) {
-  const total = value.filter((v) => v.grade).length;
-  const totalSum = value.filter((v) => v.grade);
-  let sum = 0;
-  totalSum.forEach((s) => (sum += s.grade));
-  return sum / total ? Number((sum / total).toFixed(0)) : 0;
-});
-hbs.registerHelper("colorScore", function (value) {
-  if (value >= 80) {
-    return "green";
-  } else if (value >= 60) {
-    return "yellow";
-  } else {
-    return "red";
-  }
-});
 
 // default value for title local
 app.locals.title = "Express - Generated with IronGenerator";
@@ -78,9 +55,11 @@ const index = require("./routes/index.routes");
 const auth = require("./routes/auth.routes");
 const user = require("./routes/exam.routes");
 const tester = require("./routes/tester.routes");
+const stripe = require("./routes/stripe.routes")
 app.use("/", index);
 app.use("/api", auth);
 app.use("/user", user);
-app.use("/", tester);
+app.use("/tester", tester);
+app.use("/payment", stripe);
 
 module.exports = app;

@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const nodemailer = require("nodemailer");
+const multer = require("../configs/cloudinary.config");
+const { dayTrials } = require("../controllers/trialController");
+//MODELOS
 const Exam = require("../models/exam.model");
 const Question = require("../models/question.model");
 const GroupTest = require("../models/grouptest.model");
 const Tester = require("../models/tester.model");
 const User = require("../models/users.model");
-3;
-const nodemailer = require("nodemailer");
-const multer = require("../configs/cloudinary.config");
 
 //Test for the General View
 router.get("/tests", async (req, res, next) => {
@@ -122,11 +123,24 @@ router.post("/tests/:id", async (req, res, next) => {
 
 router.get("/user-profile/:id", async (req, res, next) => {
   const { id } = req.params;
+
   try {
     const findGroupTest = await GroupTest.find({ user: id })
       .populate("test")
       .populate("testerEmail");
     res.json(findGroupTest);
+  } catch (e) {
+    res.json({ errorMessage: "Estas equivocado" });
+  }
+});
+
+router.get("/user-profile-info/:id", dayTrials, async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const userInfo = await User.findById(id);
+    const leftDay = 14 - req.leftDay;
+    res.json({ userInfo, leftDay });
   } catch (e) {
     res.json({ errorMessage: "Estas equivocado" });
   }
@@ -144,8 +158,6 @@ router.get("/user-profile/edit-test/:id", async (req, res, next) => {
 
 router.post("/user-profile/create-test/:id", async (req, res, next) => {
   const { id } = req.params;
-  //const checkTester = await Tester.find({ code: id });
-  //const emailTesterDB = checkTester.map((t) => t.email);
 
   try {
     await GroupTest.findByIdAndUpdate(
@@ -159,16 +171,36 @@ router.post("/user-profile/create-test/:id", async (req, res, next) => {
   } catch (e) {
     res.json({ errorMessage: e });
   }
+});
 
-  /*   if (!testerEmail) {
-    return res.redirect(`/user-profile/create-test/${id}`);
-  } else if (!emailTesterDB.some((email) => email == testerEmail)) {
+router.put("/user-profile/edit-test/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await GroupTest.findByIdAndUpdate(
+      id,
+      {
+        test: req.body.test,
+      },
+      { new: true }
+    );
+  } catch (e) {
+    res.json({ errorMessage: e });
+  }
+});
+
+router.post("/send-email/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { testerEmail } = req.body;
+  const checkTester = await Tester.find({ code: id });
+  const emailTesterDB = checkTester.map((t) => t.email);
+
+  if (!emailTesterDB.some((email) => email == testerEmail)) {
     const TesterCreate = await Tester.create({
       email: testerEmail,
       code: id,
     });
     const idTester = TesterCreate._id;
-    const updateTester = await GroupTest.findByIdAndUpdate(
+    await GroupTest.findByIdAndUpdate(
       id,
       { $addToSet: { testerEmail: idTester } },
       { new: true }
@@ -190,29 +222,10 @@ router.post("/user-profile/create-test/:id", async (req, res, next) => {
         text: `Este es el código para entrar ${id}`,
         html: `<b>Este es el código para entrar ${id}</b>`,
       })
-      .then((info) => console.log(info))
-      .catch((error) => console.log(error));
-  } */
-});
-
-router.put("/user-profile/edit-test/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const { idTestAdd } = req.body;
-  //const checkTester = await Tester.find({ code: id });
-  //const emailTesterDB = checkTester.map((t) => t.email);
-
-  console.log(req.body);
-
-  try {
-    await GroupTest.findByIdAndUpdate(
-      id,
-      {
-        test: req.body.test,   
-      },
-      { new: true }
-    );
-  } catch (e) {
-    res.json({ errorMessage: e });
+      .then((info) => res.status(200).json(info))
+      .catch((error) => res.status(400).json(error));
+  } else {
+    res.status(400).json({ message: "Este correo ya esta agregado" });
   }
 });
 

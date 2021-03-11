@@ -7,6 +7,9 @@ const userSchema = new Schema(
       type: String,
       required: [true, "El nombre es requerido"],
     },
+    stripeId:{
+      type:String
+    },
     lastName: {
       type: String,
       required: [true, "El apellido es requerido"],

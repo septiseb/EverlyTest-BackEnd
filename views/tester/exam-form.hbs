@@ -11,38 +11,3 @@
     <button type="submit" class="btn btn-custom btn-lg btn-block mt-3">Enviar</button>
 </form> --}}
 
-<div style="display: flex; justify-content: center;" class="mt-5 md:mt-0 md:col-span-2">
-  <form action="/tester/{{this.idTester}}/{{this.idTest}}" method="POST">
-    <input type="hidden" name="numberQuestions" value="{{this.questions.length}}">
-
-    <div class="shadow overflow-hidden sm:rounded-md">
-      <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
-        <fieldset>
-          {{#each this.questions}}
-          <p class="text-sm text-gray-500">{{question}}</p><small>{{nameExam}}</small></p>
-
-          <div class="mt-4 space-y-4">
-            {{#each options}}
-            <div class="flex items-center">
-              <input id="push_everything" name="{{../id}}" value="{{this}}" type="radio"
-                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-              <label for="{{this}}" class="ml-3 block text-sm font-medium text-gray-700">
-                {{this}}
-              </label>
-            </div>
-            {{/each}}
-            <hr>
-            {{/each}}
-          </div>
-        </fieldset>
-      </div>
-      <div style="justify-content: left;display: flex;" class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-        <button type="submit"
-          class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          style="justify-content: left;">
-          Enviar
-        </button>
-      </div>
-    </div>
-  </form>
-</div>
