@@ -9,7 +9,7 @@ const { check } = require("express-validator");
 const authController = require("../controllers/authController");
 
 // IMPORTACION DE MODELOS
-const { logInLink, logInLinkCB } = require("../controllers/linkedinController");
+
 
 //Variables
 const roundSalt = 10;
