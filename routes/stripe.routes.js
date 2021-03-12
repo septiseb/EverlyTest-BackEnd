@@ -48,7 +48,7 @@ router.post("/create-checkout-session/:id", async (req, res) => {
       // is redirected to the success page.
       success_url:
         process.env.FRONTEND + "/success.html?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: FRONTEND + "/canceled.html",
+      cancel_url: process.env.FRONTEND + "/canceled.html",
     });
 
     res.send({
