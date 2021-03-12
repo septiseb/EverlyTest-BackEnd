@@ -176,13 +176,14 @@ router.post("/user-profile/create-test/:id", async (req, res, next) => {
 router.put("/user-profile/edit-test/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    await GroupTest.findByIdAndUpdate(
+    const testUpdate = await GroupTest.findByIdAndUpdate(
       id,
       {
         test: req.body.test,
       },
       { new: true }
     );
+    res.status(200).json(testUpdate);
   } catch (e) {
     res.json({ errorMessage: e });
   }
